@@ -61,7 +61,6 @@
             margin: 0 auto 5px;
         }
 
-
         .disabled {
             opacity: 0.4;
         }
@@ -69,7 +68,7 @@
 
         .shop {
             margin-top: 20px;
-            margin-bottom: 80px;
+            margin-bottom: 80px; 
             width: 600px;
             margin-left: auto;
             margin-right: auto;
@@ -143,6 +142,8 @@
             margin-left: 20px;
             /* Spazio minimo di sicurezza */
         }
+
+
     </style>
 
     <script src="objectos_est.js"></script>
@@ -162,20 +163,83 @@
         <div class="radio-group" id="radioGroup"></div>
     </div>
 
-    <button onclick="checkPassword()">¡Jugar!</button>
 
-    <script>
-        function checkPassword() {
-            const passwordCorretta = "0605"; // Imposta qui la tua password
-            const inserita = prompt("Password:");
+    <div class="shop">
+        <!-- Colonna Portafoglio (1/3) -->
+        <div class="wallet-column">
+            <div class="wallet-content">
+                <h3> Billetera </h3>
+                <p> ✨<em><span id="balance" style="font-weight: bold;">15</span> Cosmonedas</em>✨ </p>
+            </div>
+        </div>
 
-            if (inserita === passwordCorretta) {
-                window.open('game.html', '_blank');
-            } else {
-                alert("Wrong password!");
-            }
-        }
-    </script>
+        <!-- Colonna Item (2/3) -->
+        <div class="items-column">
+            <div class="shop-item">
+                <input type="checkbox" id="item1" onclick="buy(this, 2, 'Radio')">
+                <label for="item1">
+                    <span class="item-name">Radio</span>
+                    <span class="item-price">2 Cosmonedas</span>
+                </label>
+            </div>
+
+            <div class="shop-item">
+                <input type="checkbox" id="item2" onclick="buy(this, 2, 'HI')">
+                <label for="item2">
+                    <span class="item-name">HI</span>
+                    <span class="item-price">2 Cosmonedas</span>
+                </label>
+            </div>
+
+            <div class="shop-item">
+                <input type="checkbox" id="item3" onclick="buy(this, 3, 'CO')">
+                <label for="item3">
+                    <span class="item-name">CO</span>
+                    <span class="item-price">3 Cosmonedas</span>
+                </label>
+            </div>
+
+            <div class="shop-item">
+                <input type="checkbox" id="item4" onclick="buy(this, 6, 'Far Infrared')">
+                <label for="item4">
+                    <span class="item-name">Far Infrared</span>
+                    <span class="item-price">6 Cosmonedas</span>
+                </label>
+            </div>
+
+            <div class="shop-item">
+                <input type="checkbox" id="item5" onclick="buy(this, 4, 'Near Infrared')">
+                <label for="item5">
+                    <span class="item-name">Near Infrared</span>
+                    <span class="item-price">4 Cosmonedas</span>
+                </label>
+            </div>
+
+            <div class="shop-item">
+                <input type="checkbox" id="item6" onclick="buy(this, 4, 'Hα')">
+                <label for="item6">
+                    <span class="item-name">Hα (6563 Å)</span>
+                    <span class="item-price">4 Cosmonedas</span>
+                </label>
+            </div>
+
+            <div class="shop-item">
+                <input type="checkbox" id="item7" onclick="buy(this, 5, 'Ultraviolet')">
+                <label for="item7">
+                    <span class="item-name">Ultraviolet</span>
+                    <span class="item-price">5 Cosmonedas</span>
+                </label>
+            </div>
+
+            <div class="shop-item">
+                <input type="checkbox" id="item8" onclick="buy(this, 4, 'X-ray')">
+                <label for="item8">
+                    <span class="item-name">X-ray</span>
+                    <span class="item-price">4 Cosmonedas</span>
+                </label>
+            </div>
+
+        </div>
 
     </div>
 
@@ -200,17 +264,17 @@
 
 
         const frequencies = [
-            { name: "Radio", wavelength: "10^3 m", enabled: true, start: 0.02, end: 0.15 },
+            { name: "Radio", wavelength: "10^3 m", enabled: false, start: 0.02, end: 0.15 },
             //{ name: "Microwave", wavelength: "10^-2 m", enabled: true, start: 0.15, end: 0.35 },
-            { name: "HI", wavelength: "21 cm", enabled: true, start: 0.14, end: 0.16 },
-            { name: "CO", wavelength: "2.6 mm", enabled: true, start: 0.34, end: 0.36 },
-            { name: "Far Infrared", wavelength: "10^-4 m", enabled: true, start: 0.35, end: 0.405 },
-            { name: "Near Infrared", wavelength: "10^-5 m", enabled: true, start: 0.405, end: 0.46 },
+            { name: "HI", wavelength: "21 cm", enabled: false, start: 0.14, end: 0.16 },
+            { name: "CO", wavelength: "2.6 mm", enabled: false, start: 0.34, end: 0.36 },
+            { name: "Far Infrared", wavelength: "10^-4 m", enabled: false, start: 0.35, end: 0.405 },
+            { name: "Near Infrared", wavelength: "10^-5 m", enabled: false, start: 0.405, end: 0.46 },
             //{ name: "Infrared", wavelength: "10^-4 m", enabled: false, start: 0.35, end: 0.46 },
             { name: "Visible", wavelength: "10^-6 m", enabled: true, start: 0.46, end: 0.60 },
-            { name: "Hα", wavelength: "656,3 nm", enabled: true, start: 0.57, end: 0.59 },
-            { name: "Ultraviolet", wavelength: "10^-8 m", enabled: true, start: 0.60, end: 0.73 },
-            { name: "X-ray", wavelength: "10^-10 m", enabled: true, start: 0.73, end: 0.84 },
+            { name: "Hα", wavelength: "656,3 nm", enabled: false, start: 0.57, end: 0.59 },
+            { name: "Ultraviolet", wavelength: "10^-8 m", enabled: false, start: 0.60, end: 0.73 },
+            { name: "X-ray", wavelength: "10^-10 m", enabled: false, start: 0.73, end: 0.84 },
             //{ name: "Gamma", wavelength: "10^-12 m", enabled: true, start: 0.84, end: 0.98 }
         ];
 
@@ -245,7 +309,7 @@
             radio.addEventListener("change", () => {
                 drawBanda(freq);
                 actual_wave = freq.name;
-                draw()
+                draw();
             });
         });
 
@@ -369,7 +433,7 @@
 
 
 
-        let saldo = 100;
+        let saldo = 15;
 
         function buy(checkbox, prezzo, freqName = '') {
             const displaySaldo = document.getElementById('balance');

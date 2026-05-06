@@ -35,15 +35,11 @@ class Star extends SpaceObject {
                 color = "yellow";
                 break;
 
-            /* case "Near Infrared":
-                color = "rgba(255, 0, 0, " + (1- this.birthdate / 5) + ")"
+            case "Near Infrared":
+                color = "rgba(255, 0, 0, " + (1 - this.birthdate / 6) + ")"
                 break;
 
             case "Far Infrared":
-                color = "rgba(255,0,0,0.12)"
-                break; */
-            
-            case "Infrared":
                 color = "rgba(255,0,0,0.12)"
                 break;
 
@@ -55,8 +51,30 @@ class Star extends SpaceObject {
                 color = "rgba(0,0,0,0)"
                 break;
 
+            case "Radio":
+                color = "rgba(0,0,0,0)"
+                break;
+
             case "CO":
                 color = "rgba(0,0,0,0)"
+                break;
+
+            case "HI":
+                color = "rgba(0,0,0,0)"
+                break;
+
+            case "X-ray":
+                color = "rgba(50, 200, 255, " + (this.birthdate / 5) * (this.birthdate > 7) + ")"
+                for (let i = 0; i < 10; i++) {
+                    // Calcola una posizione casuale nell'intorno di X e Y
+                    // (Math.random() - 0.5) restituisce un valore tra -0.5 e 0.5
+                    // moltiplicato per lo spread sposta il quadrato vicino al centro
+                    ctx.fillStyle = color;
+                    const randX = 200 + (Math.random() - 0.5) * 120;
+                    const randY = 100 + (Math.random() - 0.5) * 120;
+
+                    ctx.fillRect(randX, randY, 20, 20);
+                }
                 break;
 
             // fallback
@@ -118,18 +136,12 @@ class DustLump extends SpaceObject {
                 size = R_DUST;
                 break;
 
-            /* case "Far Infrared":
-                color = `rgba(255, 0, 0, ${this.field})`;
-                size = R_DUST * 0.5; // più piccoli
-                break;
-                
             case "Near Infrared":
-                //color = `rgba(255, 0, 0, ${Math.min(0.01/this.field, 0.1)})`;
-                color = `rgba(255, 0, 0, ${0.1*(this.field>0.2)})`;
-                size = R_DUST * 0.5; // più piccoli
-                break; */
-            
-            case "Infrared":
+                color = `rgba(0, 0, 0, ${DUST_ALPHA / 4})`;
+                size = R_DUST / 2;
+                break;
+
+            case "Far Infrared":
                 color = `rgba(255, 0, 0, ${this.field})`;
                 size = R_DUST * 0.5; // più piccoli
                 break;
@@ -148,10 +160,20 @@ class DustLump extends SpaceObject {
                 color = `rgba(0, 0, 0, 0)`;
                 size = R_DUST * 2;
                 break;
-            
+
             case "CO":
                 color = `rgba(0, 0, 0, 0)`;
                 size = R_DUST * 2;
+                break;
+
+            case "HI":
+                color = `rgba(0, 0, 0, 0)`;
+                size = R_DUST * 2;
+                break;
+
+            case "X-ray":
+                color = `rgba(0, 0, 2, ${DUST_ALPHA / 2})`;
+                size = R_DUST;
                 break;
 
             // fallback
@@ -210,55 +232,72 @@ class Gas extends SpaceObject {
 
             //const size = Math.random() * 4 + 2;
 
-            if (i / numParticles < atom_perc) {
-                this.particles.push(
-                    new GasAtom(dx, dy, dz)
-                );
-            }else{
-                this.particles.push(
-                    new GasMol(dx, dy, dz)
-                );
+            const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+            // Logica spaziale: Esterno = Atomi, Interno = Molecole
+            if (distance > 1 * spread) {
+                this.particles.push(new GasAtom(dx, dy, dz));
+            } else {
+                this.particles.push(new GasMol(dx, dy, dz));
             }
         }
     }
 
     draw(ctx, actual_wave) {
-
-        // Ordina le particelle interne per z relativo
+        // Ordina le particelle per profondità
         this.particles.sort((a, b) => a.z - b.z);
 
-        // valori di default (Visible)
-        let color = `rgba(0, 0, 0, 0)`;
-        let size = 2;
+        // Definiamo due configurazioni di stile
+        let styleAtom = { color: `rgba(0, 0, 0, 0)`, size: 2 };
+        let styleMol = { color: `rgba(0, 0, 0, 0)`, size: 2 };
 
         switch (actual_wave) {
             case "Hα":
-                color = `rgb(0, 255, 4)`;
-                size = 2;
-                break;
-            
-            case "CO":
-                color = `rgb(0, 255, 4, 0.5)`;
-                size = 6;
+                // Esempio: Atomi verde brillante, Molecole verde scuro
+                //styleAtom = { color: `rgb(0, 255, 4)`, size: 2 };
+                styleMol = { color: `rgb(0, 255, 2)`, size: 3 };
                 break;
 
-            // fallback
+            case "Radio":
+                // Esempio: Atomi verde brillante, Molecole verde scuro
+                //styleAtom = { color: `rgb(0, 255, 4)`, size: 2 };
+                styleMol = { color: `rgb(0, 255, 2, 0.01)`, size: 100 };
+                break;
+
+            case "CO":
+                // Esempio: Atomi invisibili (o quasi), Molecole evidenti per il CO
+                //styleAtom = { color: `rgba(255, 255, 255, 0.1)`, size: 2 };
+                styleMol = { color: `rgba(234, 94, 0, 0.7)`, size: 6 };
+                break;
+
+            case "HI":
+                // Esempio: Atomi invisibili (o quasi), Molecole evidenti per il CO
+                styleAtom = { color: `rgba(0, 255, 242, 1)`, size: 4 };
+                //styleMol  = { color: `rgb(0, 255, 4, 0.8)`, size: 6 };
+                break;
+
             default:
-                color = `rgba(0, 0, 0, 0)`;
-                size = R_DUST;
+                styleAtom = { color: `rgba(0, 0, 0, 0)`, size: 1 };
+                styleMol = { color: `rgba(0, 0, 0, 0)`, size: 1 };
         }
 
         for (let p of this.particles) {
-
             const globalX = this.x + p.x;
             const globalY = this.y + p.y;
-            const globalZ = this.z + p.z;
 
             const screenX = canvas.width / 2 + globalX;
             const screenY = canvas.height / 2 + globalY;
 
-            ctx.fillStyle = color;
-            ctx.fillRect(screenX, screenY, size, size);
+            // --- SELEZIONE DELLO STILE IN BASE AL TIPO ---
+            let currentStyle;
+            if (p instanceof GasAtom) {
+                currentStyle = styleAtom;
+            } else {
+                currentStyle = styleMol;
+            }
+
+            ctx.fillStyle = currentStyle.color;
+            ctx.fillRect(screenX, screenY, currentStyle.size, currentStyle.size);
         }
     }
 }
@@ -291,5 +330,5 @@ function draw() {
         obj.draw(ctx, actual_wave);
     }
 
-    requestAnimationFrame(draw);
+    //requestAnimationFrame(draw);
 }
