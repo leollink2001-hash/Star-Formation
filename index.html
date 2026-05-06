@@ -166,7 +166,7 @@
 
     <script>
         function checkPassword() {
-            const passwordCorretta = "0605"; // Imposta qui la tua password
+            const passwordCorretta = "0705"; // Imposta qui la tua password
             const inserita = prompt("Password:");
 
             if (inserita === passwordCorretta) {
@@ -196,7 +196,7 @@
             drawBanda(visible);
         };
 
-        let actual_wave;
+        let actual_wave = 'Visible';
 
 
         const frequencies = [
@@ -305,9 +305,11 @@
             SPACE_WIDTH = canvas.width;
             SPACE_HEIGHT = canvas.height;
             SPACE_DEPTH = canvas.height; // come hai richiesto
+            
         }
-        window.addEventListener("resize", resizeCanvas);
+        //window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
+        
 
 
         // Lista oggetti

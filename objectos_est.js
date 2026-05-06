@@ -32,7 +32,17 @@ class Star extends SpaceObject {
         switch (actual_wave) {
 
             case "Visible":
-                color = "yellow";
+                // Calcoliamo il fattore di interpolazione (t) da 0.0 a 1.0
+                // Se birthdate è 1, t = 0 (Rosa)
+                // Se birthdate è 9, t = 1 (Azzurro)
+                let t = (this.birthdate - 1) / 8;
+
+                // Interpolazione lineare: Start + (End - Start) * t
+                let r = Math.round(255 + (150 - 255) * t);
+                let g = 500; // Il verde rimane costante come da tua richiesta
+                let b = Math.round(150 + (255 - 100) * t);
+
+                color = "rgb(" + r + ", " + g + ", " + b + ")";
                 break;
 
             case "Near Infrared":
