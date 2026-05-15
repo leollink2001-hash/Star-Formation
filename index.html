@@ -162,18 +162,11 @@
         <div class="radio-group" id="radioGroup"></div>
     </div>
 
-    <button onclick="checkPassword()">¡Jugar!</button>
+    <button onclick="open_game()">¡Jugar!</button>
 
     <script>
-        function checkPassword() {
-            const passwordCorretta = "0705"; // Imposta qui la tua password
-            const inserita = prompt("Password:");
-
-            if (inserita === passwordCorretta) {
-                window.open('game.html', '_blank');
-            } else {
-                alert("Wrong password!");
-            }
+        function open_game() {
+            window.open('game.html', '_self');
         }
     </script>
 
